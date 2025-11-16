@@ -55,6 +55,25 @@ Vytvoří hustou křížovku, kde téměř každé políčko je součástí slov
 
 Používá velkou databázi 23,113 slov a vygeneruje 80-120 slov s vyplněností 95-99%.
 
+**Varování:** Hustá křížovka může obsahovat nevalidní sekvence písmen.
+
+### Generování validní křížovky (DOPORUČENO):
+
+```bash
+cd src
+python generate_valid_html.py
+```
+
+Vytvoří **validní křížovku**, kde:
+- **Všechna slova (vodorovně i svisle) jsou z databáze**
+- **Žádné duplicity** - každé slovo použito max 1x
+- Vygeneruje typicky 20-40 slov
+- Mřížka je menší, ale 100% validní
+
+Soubory:
+- `krizovka_validni_reseni.html` - validní křížovka s řešením
+- `krizovka_validni_zadani.html` - validní křížovka k vyplnění
+
 ### První spuštění:
 
 ```bash
@@ -76,8 +95,10 @@ krizovka/
 ├── src/
 │   ├── generator.py            # Základní generátor křížovky
 │   ├── dense_generator.py      # Generátor hustých křížovek
+│   ├── valid_generator.py      # Generátor validních křížovek ⭐
 │   ├── generate_html.py        # HTML výstup (základní)
 │   ├── generate_dense_html.py  # HTML výstup (hustá křížovka)
+│   ├── generate_valid_html.py  # HTML výstup (validní křížovka) ⭐
 │   ├── grid.py                 # Třída pro mřížku
 │   ├── prepare_words.py        # Příprava a čištění slov
 │   ├── nominative_filter_v2.py # Filtr pro nominativní tvary
@@ -86,7 +107,9 @@ krizovka/
 │   ├── krizovka_reseni.html         # Základní křížovka - řešení
 │   ├── krizovka_zadani.html         # Základní křížovka - zadání
 │   ├── krizovka_husta_reseni.html   # Hustá křížovka - řešení
-│   └── krizovka_husta_zadani.html   # Hustá křížovka - zadání
+│   ├── krizovka_husta_zadani.html   # Hustá křížovka - zadání
+│   ├── krizovka_validni_reseni.html # Validní křížovka - řešení ⭐
+│   └── krizovka_validni_zadani.html # Validní křížovka - zadání ⭐
 └── README.md
 ```
 
