@@ -50,6 +50,51 @@ class Grid:
         self.word_boundaries_h = set()  # Horizontální hranice (tučné linky vlevo od buňky)
         self.word_boundaries_v = set()  # Vertikální hranice (tučné linky nahoře od buňky)
 
+    def _is_continuous_sequence(self, row: int, col: int, direction: Direction) -> bool:
+        """
+        Kontroluje, zda na dané pozici v daném směru není přerušená sekvence.
+        Přerušená sekvence = písmeno-mezera-písmeno, což je nevalidní.
+
+        Args:
+            row, col: pozice ke kontrole
+            direction: směr kontroly
+
+        Returns:
+            True pokud je sekvence kontinuální (bez mezer uprostřed)
+        """
+        # Kontrola: nesmí být situace "písmeno - mezera - písmeno" v daném směru
+
+        if direction == Direction.VERTICAL:
+            # Kontrola svisle (nahoru a dolů)
+            # Pokud je nad pozicí mezera a pak písmeno -> nekontinuální
+            if row > 0 and self.cells[row][col] == ' ':
+                # Mezera na aktuální pozici, podívej se nahoru
+                if row > 1 and self.cells[row - 1][col] == ' ' and self.cells[row - 2][col] != ' ':
+                    return False  # písmeno - mezera - (nová pozice)
+                # Podívej se dolů
+                if row < self.size - 1 and self.cells[row + 1][col] != ' ':
+                    # Kontroluj, jestli není písmeno - (nová pozice) - mezera - písmeno
+                    for r in range(row + 2, self.size):
+                        if self.cells[r][col] != ' ':
+                            return False  # Našli jsme písmeno přes mezeru
+                        elif r > row + 1:  # Našli jsme další mezeru, konec sekvence
+                            break
+        else:
+            # Kontrola vodorovně (vlevo a vpravo)
+            if col > 0 and self.cells[row][col] == ' ':
+                # Mezera na aktuální pozici, podívej se vlevo
+                if col > 1 and self.cells[row][col - 1] == ' ' and self.cells[row][col - 2] != ' ':
+                    return False
+                # Podívej se vpravo
+                if col < self.size - 1 and self.cells[row][col + 1] != ' ':
+                    for c in range(col + 2, self.size):
+                        if self.cells[row][c] != ' ':
+                            return False
+                        elif c > col + 1:
+                            break
+
+        return True
+
     def can_place_word(self, word: str, row: int, col: int, direction: Direction) -> bool:
         """Kontroluje, zda lze slovo umístit na danou pozici."""
         # Kontrola hranic
@@ -73,8 +118,33 @@ class Grid:
             if cell_value != ' ' and cell_value != char:
                 return False
 
-            # V české klasické křížovce mohou být slova těsně vedle sebe
-            # oddělená jen vizuálně tučnými linkami, takže nekontroluji okolí
+            # NOVÉ: Kontrola kontinuity v kolmém směru
+            # Nesmí vzniknout přerušená sekvence (písmeno-mezera-písmeno)
+            if cell_value == ' ':  # Pouze pokud umisťujeme nové písmeno
+                perp_direction = Direction.VERTICAL if direction == Direction.HORIZONTAL else Direction.HORIZONTAL
+
+                # Kontrola kontinuity v kolmém směru
+                if direction == Direction.HORIZONTAL:
+                    # Slovo je vodorovné, kontroluji svisle
+                    # Nesmí být písmeno nad s mezerou mezi, nebo písmeno pod s mezerou mezi
+                    if r > 0 and self.cells[r - 1][c] == ' ':
+                        # Nad je mezera, zkontroluj jestli ještě výš není písmeno
+                        if r > 1 and self.cells[r - 2][c] != ' ':
+                            return False  # písmeno - mezera - nové_písmeno
+                    if r < self.size - 1 and self.cells[r + 1][c] == ' ':
+                        # Pod je mezera, zkontroluj jestli ještě níž není písmeno
+                        if r < self.size - 2 and self.cells[r + 2][c] != ' ':
+                            return False  # nové_písmeno - mezera - písmeno
+                else:
+                    # Slovo je svislé, kontroluji vodorovně
+                    if c > 0 and self.cells[r][c - 1] == ' ':
+                        # Vlevo je mezera, zkontroluj jestli ještě víc vlevo není písmeno
+                        if c > 1 and self.cells[r][c - 2] != ' ':
+                            return False  # písmeno - mezera - nové_písmeno
+                    if c < self.size - 1 and self.cells[r][c + 1] == ' ':
+                        # Vpravo je mezera, zkontroluj jestli ještě víc vpravo není písmeno
+                        if c < self.size - 2 and self.cells[r][c + 2] != ' ':
+                            return False  # nové_písmeno - mezera - písmeno
 
         return True
 
