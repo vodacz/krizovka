@@ -14,11 +14,13 @@ Automatický generátor českých klasických křížovek.
 ## Databáze slov
 
 **Malá databáze:** 887 slov (pro rychlé testování)
-**Velká databáze:** 23,113 slov (pro husté křížovky)
+**Velká databáze:** 23,113 slov (všechny tvary)
+**Nominativní databáze:** 22,833 slov (pouze nominativ sg/pl)
 
 Zdroje:
 - Malá: 1000 nejčastějších českých slov
 - Velká: word-o-mat seznam z titulků (Creative Commons BY-SA 3.0)
+- Nominativní: automaticky filtrováno pomocí morfologických pravidel
 
 ## Použití
 
@@ -66,18 +68,20 @@ python prepare_words.py
 ```
 krizovka/
 ├── data/
-│   ├── czech_words.txt              # Původní malý seznam (1000 slov)
-│   ├── czech_words_clean.txt        # Vyčištěný malý seznam (887 slov)
-│   ├── czech_words_large.txt        # Velký seznam (23,371 slov)
-│   └── czech_words_large_clean.txt  # Vyčištěný velký seznam (23,113 slov)
+│   ├── czech_words.txt                 # Původní malý seznam (1000 slov)
+│   ├── czech_words_clean.txt           # Vyčištěný malý seznam (887 slov)
+│   ├── czech_words_large.txt           # Velký seznam (23,371 slov)
+│   ├── czech_words_large_clean.txt     # Vyčištěný velký seznam (23,113 slov)
+│   └── czech_words_large_nominative.txt # Pouze nominativy (22,833 slov)
 ├── src/
-│   ├── generator.py           # Základní generátor křížovky
-│   ├── dense_generator.py     # Generátor hustých křížovek
-│   ├── generate_html.py       # HTML výstup (základní)
-│   ├── generate_dense_html.py # HTML výstup (hustá křížovka)
-│   ├── grid.py                # Třída pro mřížku
-│   ├── prepare_words.py       # Příprava a čištění slov
-│   └── visualizer.py          # Vizualizace výstupu
+│   ├── generator.py            # Základní generátor křížovky
+│   ├── dense_generator.py      # Generátor hustých křížovek
+│   ├── generate_html.py        # HTML výstup (základní)
+│   ├── generate_dense_html.py  # HTML výstup (hustá křížovka)
+│   ├── grid.py                 # Třída pro mřížku
+│   ├── prepare_words.py        # Příprava a čištění slov
+│   ├── nominative_filter_v2.py # Filtr pro nominativní tvary
+│   └── visualizer.py           # Vizualizace výstupu
 ├── output/
 │   ├── krizovka_reseni.html         # Základní křížovka - řešení
 │   ├── krizovka_zadani.html         # Základní křížovka - zadání
