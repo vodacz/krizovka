@@ -60,21 +60,9 @@ class Grid:
             if row + len(word) > self.size:
                 return False
 
-        # Kontrola, zda pole před slovem není obsazené
-        if direction == Direction.HORIZONTAL and col > 0:
-            if self.cells[row][col - 1] != ' ':
-                return False
-        elif direction == Direction.VERTICAL and row > 0:
-            if self.cells[row - 1][col] != ' ':
-                return False
-
-        # Kontrola, zda pole za slovem není obsazené
-        if direction == Direction.HORIZONTAL:
-            if col + len(word) < self.size and self.cells[row][col + len(word)] != ' ':
-                return False
-        else:
-            if row + len(word) < self.size and self.cells[row + len(word)][col] != ' ':
-                return False
+        # V české klasické křížovce jsou slova oddělena jen tučnými linkami,
+        # takže slova mohou být těsně vedle sebe bez prázdných polí mezi nimi.
+        # Nekontroluji tedy pole před/za slovem.
 
         # Kontrola každého písmene
         for i, char in enumerate(word):
