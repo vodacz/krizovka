@@ -36,11 +36,11 @@ def visualize_ascii(grid: Grid, show_letters: bool = True) -> str:
         for j, cell in enumerate(row):
             abs_col = min_col + j
 
-            # Zobraz písmeno nebo prázdné pole
+            # Zobraz písmeno nebo černé pole
             if cell != ' ':
                 char = cell.upper() if show_letters else ' '
             else:
-                char = '·'  # Prázdné pole (mezera mezi slovy)
+                char = '█'  # Černé pole (není součástí žádného slova)
 
             # Přidej znak
             if j > 0:
@@ -127,8 +127,8 @@ def visualize_html(grid: Grid, show_letters: bool = True, title: str = "Křížo
             border-bottom: 1px solid #ccc;
             box-sizing: border-box;
         }}
-        .cell.empty {{
-            background-color: #f0f0f0;
+        .cell.black {{
+            background-color: #000;
         }}
         .cell.border-left {{
             border-left: 3px solid #000;
@@ -206,7 +206,7 @@ def visualize_html(grid: Grid, show_letters: bool = True, title: str = "Křížo
 
             # Obsah buňky
             if cell == ' ':
-                css_classes.append("empty")
+                css_classes.append("black")
                 content = ''
             else:
                 content = cell.upper() if show_letters else ''
