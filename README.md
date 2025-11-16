@@ -5,8 +5,9 @@ Automatický generátor českých klasických křížovek.
 ## Funkce
 
 - Generování mřížky křížovky z databáze slov
-- Česká klasická křížovka (černá pole oddělují slova)
+- Česká klasická křížovka (slova oddělená tučnými linkami, ne černými poli)
 - Automatické umisťování slov s kontrolou křížení
+- Slova mohou být těsně vedle sebe (vizuálně oddělená linkami)
 - Vizualizace v ASCII a HTML formátu
 - Export do HTML (s řešením i prázdné zadání)
 

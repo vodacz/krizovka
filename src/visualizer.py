@@ -28,13 +28,32 @@ def visualize_ascii(grid: Grid, show_letters: bool = True) -> str:
     # Horní okraj
     lines.append("┌" + "─" * (len(trimmed[0]) * 2 - 1) + "┐")
 
-    # Řádky mřížky
-    for row in trimmed:
-        if show_letters:
-            line = "│" + " ".join(c if c != ' ' else '·' for c in row) + "│"
-        else:
-            line = "│" + " ".join('█' if c == ' ' else '□' for c in row) + "│"
-        lines.append(line)
+    # Řádky mřížky - v české klasické křížovce nejsou černá pole
+    for i, row in enumerate(trimmed):
+        abs_row = min_row + i
+        line_parts = ["│"]
+
+        for j, cell in enumerate(row):
+            abs_col = min_col + j
+
+            # Zobraz písmeno nebo prázdné pole
+            if cell != ' ':
+                char = cell.upper() if show_letters else ' '
+            else:
+                char = '·'  # Prázdné pole (mezera mezi slovy)
+
+            # Přidej znak
+            if j > 0:
+                # Kontrola, zda mezi buňkami je hranice slova (tučná linka)
+                if (abs_row, abs_col) in grid.word_boundaries_h:
+                    line_parts.append("│")  # Tučná linka
+                else:
+                    line_parts.append(" ")  # Normální mezera
+
+            line_parts.append(char)
+
+        line_parts.append("│")
+        lines.append("".join(line_parts))
 
     # Spodní okraj
     lines.append("└" + "─" * (len(trimmed[0]) * 2 - 1) + "┘")
@@ -57,6 +76,7 @@ def visualize_html(grid: Grid, show_letters: bool = True, title: str = "Křížo
         return "<p>Prázdná mřížka</p>"
 
     trimmed = grid.get_trimmed_grid()
+    min_row, max_row, min_col, max_col = grid.get_bounds()
 
     html = [f"""<!DOCTYPE html>
 <html lang="cs">
@@ -90,24 +110,37 @@ def visualize_html(grid: Grid, show_letters: bool = True, title: str = "Křížo
         }}
         .crossword {{
             display: inline-grid;
-            grid-template-columns: repeat({len(trimmed[0])}, 30px);
-            gap: 1px;
-            background-color: #000;
+            grid-template-columns: repeat({len(trimmed[0])}, 35px);
             border: 2px solid #000;
         }}
         .cell {{
-            width: 30px;
-            height: 30px;
+            width: 35px;
+            height: 35px;
             background-color: white;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            font-size: 14px;
+            font-size: 16px;
             text-transform: uppercase;
+            border-right: 1px solid #ccc;
+            border-bottom: 1px solid #ccc;
+            box-sizing: border-box;
         }}
-        .cell.black {{
-            background-color: #000;
+        .cell.empty {{
+            background-color: #f0f0f0;
+        }}
+        .cell.border-left {{
+            border-left: 3px solid #000;
+        }}
+        .cell.border-right {{
+            border-right: 3px solid #000;
+        }}
+        .cell.border-top {{
+            border-top: 3px solid #000;
+        }}
+        .cell.border-bottom {{
+            border-bottom: 3px solid #000;
         }}
         .words-container {{
             flex: 1;
@@ -152,13 +185,34 @@ def visualize_html(grid: Grid, show_letters: bool = True, title: str = "Křížo
 """]
 
     # Generuj buňky mřížky
-    for row in trimmed:
-        for cell in row:
+    for i, row in enumerate(trimmed):
+        abs_row = min_row + i
+
+        for j, cell in enumerate(row):
+            abs_col = min_col + j
+
+            # Určení CSS tříd pro tučné bordery
+            css_classes = ["cell"]
+
+            # Kontrola hranic slov
+            if (abs_row, abs_col) in grid.word_boundaries_h:
+                css_classes.append("border-left")
+            if (abs_row, abs_col + 1) in grid.word_boundaries_h:
+                css_classes.append("border-right")
+            if (abs_row, abs_col) in grid.word_boundaries_v:
+                css_classes.append("border-top")
+            if (abs_row + 1, abs_col) in grid.word_boundaries_v:
+                css_classes.append("border-bottom")
+
+            # Obsah buňky
             if cell == ' ':
-                html.append('                <div class="cell black"></div>')
+                css_classes.append("empty")
+                content = ''
             else:
                 content = cell.upper() if show_letters else ''
-                html.append(f'                <div class="cell">{content}</div>')
+
+            class_str = ' '.join(css_classes)
+            html.append(f'                <div class="{class_str}">{content}</div>')
 
     html.append("""            </div>
         </div>

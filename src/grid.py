@@ -46,6 +46,9 @@ class Grid:
         self.max_row = 0
         self.min_col = size
         self.max_col = 0
+        # Sledování hranic slov pro tučné linky
+        self.word_boundaries_h = set()  # Horizontální hranice (tučné linky vlevo od buňky)
+        self.word_boundaries_v = set()  # Vertikální hranice (tučné linky nahoře od buňky)
 
     def can_place_word(self, word: str, row: int, col: int, direction: Direction) -> bool:
         """Kontroluje, zda lze slovo umístit na danou pozici."""
@@ -82,20 +85,8 @@ class Grid:
             if cell_value != ' ' and cell_value != char:
                 return False
 
-            # Kontrola okolí - nesmí se dotýkat jiných slov (kromě křížení)
-            if cell_value == ' ':
-                if direction == Direction.HORIZONTAL:
-                    # Kontrola nad a pod
-                    if r > 0 and self.cells[r - 1][c] != ' ':
-                        return False
-                    if r < self.size - 1 and self.cells[r + 1][c] != ' ':
-                        return False
-                else:
-                    # Kontrola vlevo a vpravo
-                    if c > 0 and self.cells[r][c - 1] != ' ':
-                        return False
-                    if c < self.size - 1 and self.cells[r][c + 1] != ' ':
-                        return False
+            # V české klasické křížovce mohou být slova těsně vedle sebe
+            # oddělená jen vizuálně tučnými linkami, takže nekontroluji okolí
 
         return True
 
@@ -118,6 +109,22 @@ class Grid:
         self.max_row = max(self.max_row, row + (len(word) - 1 if direction == Direction.VERTICAL else 0))
         self.min_col = min(self.min_col, col)
         self.max_col = max(self.max_col, col + (len(word) - 1 if direction == Direction.HORIZONTAL else 0))
+
+        # Zaznamenej hranice slova pro vizualizaci tučných linek
+        if direction == Direction.HORIZONTAL:
+            # Hranice před slovem (vlevo)
+            if col > 0:
+                self.word_boundaries_h.add((row, col))
+            # Hranice za slovem (vpravo)
+            if col + len(word) < self.size:
+                self.word_boundaries_h.add((row, col + len(word)))
+        else:
+            # Hranice před slovem (nahoře)
+            if row > 0:
+                self.word_boundaries_v.add((row, col))
+            # Hranice za slovem (dole)
+            if row + len(word) < self.size:
+                self.word_boundaries_v.add((row + len(word), col))
 
         return True
 
