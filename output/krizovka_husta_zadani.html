@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hustá křížovka - Zadání</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .container {
+            display: flex;
+            gap: 30px;
+            margin-top: 30px;
+        }
+        .grid-container {
+            flex: 1;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .crossword {
+            display: inline-grid;
+            grid-template-columns: repeat(25, 35px);
+            border: 2px solid #000;
+        }
+        .cell {
+            width: 35px;
+            height: 35px;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 16px;
+            text-transform: uppercase;
+            border-right: 1px solid #ccc;
+            border-bottom: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+        .cell.empty {
+            background-color: #f0f0f0;
+        }
+        .cell.border-left {
+            border-left: 3px solid #000;
+        }
+        .cell.border-right {
+            border-right: 3px solid #000;
+        }
+        .cell.border-top {
+            border-top: 3px solid #000;
+        }
+        .cell.border-bottom {
+            border-bottom: 3px solid #000;
+        }
+        .words-container {
+            flex: 1;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .word-list {
+            margin-bottom: 20px;
+        }
+        .word-list h2 {
+            color: #333;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 10px;
+        }
+        .word-item {
+            padding: 8px;
+            margin: 5px 0;
+            background: #f9f9f9;
+            border-left: 3px solid #4CAF50;
+            font-family: monospace;
+        }
+        .stats {
+            margin-top: 20px;
+            padding: 15px;
+            background: #e3f2fd;
+            border-radius: 4px;
+        }
+        .stats h3 {
+            margin-top: 0;
+            color: #1976d2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Hustá křížovka - Zadání</h1>
+
+    <div class="container">
+        <div class="grid-container">
+            <div class="crossword">
+
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-right"></div>
+                <div class="cell border-left"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-right"></div>
+                <div class="cell border-left"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-bottom"></div>
+                <div class="cell border-right"></div>
+                <div class="cell border-left"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-bottom"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-right"></div>
+                <div class="cell border-left"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-bottom"></div>
+                <div class="cell border-top"></div>
+                <div class="cell border-right"></div>
+                <div class="cell border-left"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-top"></div>
+                <div class="cell border-bottom"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-right"></div>
+                <div class="cell border-left"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-right"></div>
+                <div class="cell border-left border-top"></div>
+                <div class="cell"></div>
+                <div class="cell border-right border-bottom"></div>
+                <div class="cell border-left border-right"></div>
+                <div class="cell border-left"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-right border-top"></div>
+                <div class="cell border-left"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-right"></div>
+                <div class="cell border-left border-right"></div>
+                <div class="cell border-left"></div>
+                <div class="cell border-right"></div>
+                <div class="cell border-left"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-bottom"></div>
+                <div class="cell border-bottom"></div>
+                <div class="cell border-bottom"></div>
+                <div class="cell border-right"></div>
+                <div class="cell border-left"></div>
+                <div class="cell border-top"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-bottom"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-right"></div>
+                <div class="cell border-left"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-right"></div>
+                <div class="cell border-left border-top"></div>
+                <div class="cell border-top"></div>
+                <div class="cell border-top"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-bottom"></div>
+                <div class="cell border-bottom"></div>
+                <div class="cell border-right"></div>
+                <div class="cell border-left"></div>
+                <div class="cell border-bottom"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-top"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-right"></div>
+                <div class="cell border-left"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-right"></div>
+                <div class="cell border-left"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-top"></div>
+                <div class="cell border-top"></div>
+                <div class="cell"></div>
+                <div class="cell border-right"></div>
+                <div class="cell border-left border-top"></div>
+                <div class="cell border-bottom"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-right"></div>
+                <div class="cell border-left"></div>
+                <div class="cell"></div>
+                <div class="cell border-right"></div>
+                <div class="cell border-left"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-right border-top"></div>
+                <div class="cell border-left"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-right"></div>
+                <div class="cell border-left border-right"></div>
+                <div class="cell border-left"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-bottom"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-bottom"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-right"></div>
+                <div class="cell border-left border-bottom"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-bottom"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-right"></div>
+                <div class="cell border-left"></div>
+                <div class="cell border-bottom"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-top"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-top"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-right border-top"></div>
+                <div class="cell border-left"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-top"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-right"></div>
+                <div class="cell border-left"></div>
+                <div class="cell border-top"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-bottom"></div>
+                <div class="cell"></div>
+                <div class="cell border-bottom"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-bottom"></div>
+                <div class="cell"></div>
+                <div class="cell border-right empty"></div>
+                <div class="cell border-left"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-right"></div>
+                <div class="cell border-left border-right"></div>
+                <div class="cell border-left"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-right"></div>
+                <div class="cell border-left border-bottom"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-bottom"></div>
+                <div class="cell border-bottom"></div>
+                <div class="cell border-top"></div>
+                <div class="cell"></div>
+                <div class="cell border-top"></div>
+                <div class="cell"></div>
+                <div class="cell border-right"></div>
+                <div class="cell border-left border-top"></div>
+                <div class="cell"></div>
+                <div class="cell border-bottom"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-right"></div>
+                <div class="cell border-left"></div>
+                <div class="cell border-top"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-bottom"></div>
+                <div class="cell border-right border-top"></div>
+                <div class="cell border-left border-top"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-bottom"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell empty"></div>
+                <div class="cell border-right border-bottom"></div>
+                <div class="cell border-left border-top"></div>
+                <div class="cell border-bottom"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-bottom"></div>
+                <div class="cell border-bottom"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-right border-bottom"></div>
+                <div class="cell border-left border-top"></div>
+                <div class="cell"></div>
+                <div class="cell border-bottom empty"></div>
+                <div class="cell border-bottom"></div>
+                <div class="cell"></div>
+                <div class="cell border-top"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-bottom empty"></div>
+                <div class="cell border-top border-bottom"></div>
+                <div class="cell"></div>
+                <div class="cell border-top"></div>
+                <div class="cell border-right"></div>
+                <div class="cell border-left"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-right"></div>
+                <div class="cell border-left empty"></div>
+                <div class="cell border-top"></div>
+                <div class="cell border-top"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-top border-bottom"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-top"></div>
+                <div class="cell border-top"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-bottom"></div>
+                <div class="cell"></div>
+                <div class="cell border-top"></div>
+                <div class="cell border-top"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-right"></div>
+                <div class="cell border-left"></div>
+                <div class="cell"></div>
+                <div class="cell border-right"></div>
+                <div class="cell border-left"></div>
+                <div class="cell"></div>
+                <div class="cell border-right"></div>
+                <div class="cell border-left"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-top"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-top"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-bottom"></div>
+                <div class="cell border-bottom"></div>
+                <div class="cell"></div>
+                <div class="cell border-right border-bottom"></div>
+                <div class="cell border-left"></div>
+                <div class="cell"></div>
+                <div class="cell border-right"></div>
+                <div class="cell border-left border-right"></div>
+                <div class="cell border-left"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-right border-bottom"></div>
+                <div class="cell border-left border-bottom"></div>
+                <div class="cell"></div>
+                <div class="cell border-bottom"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-right border-bottom"></div>
+                <div class="cell border-left"></div>
+                <div class="cell border-top border-bottom"></div>
+                <div class="cell border-top"></div>
+                <div class="cell"></div>
+                <div class="cell border-top"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-bottom"></div>
+                <div class="cell border-top"></div>
+                <div class="cell border-right border-top"></div>
+                <div class="cell border-left"></div>
+                <div class="cell border-top empty"></div>
+                <div class="cell"></div>
+                <div class="cell border-bottom"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-bottom"></div>
+                <div class="cell"></div>
+                <div class="cell border-top border-bottom"></div>
+                <div class="cell"></div>
+                <div class="cell border-top"></div>
+                <div class="cell"></div>
+                <div class="cell border-right"></div>
+                <div class="cell border-left"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-top"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-right"></div>
+                <div class="cell border-left"></div>
+                <div class="cell"></div>
+                <div class="cell border-top"></div>
+                <div class="cell border-right"></div>
+                <div class="cell border-left"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-top"></div>
+                <div class="cell"></div>
+                <div class="cell border-top"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-right"></div>
+                <div class="cell border-left"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-right"></div>
+                <div class="cell border-left"></div>
+                <div class="cell empty"></div>
+                <div class="cell border-right empty"></div>
+                <div class="cell border-left"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-bottom"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-bottom"></div>
+                <div class="cell"></div>
+                <div class="cell border-bottom"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-bottom"></div>
+                <div class="cell border-bottom"></div>
+                <div class="cell border-right"></div>
+                <div class="cell border-left"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-right"></div>
+                <div class="cell border-left border-right border-bottom"></div>
+                <div class="cell border-left"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-right"></div>
+                <div class="cell border-left border-right"></div>
+                <div class="cell border-left"></div>
+                <div class="cell border-top"></div>
+                <div class="cell border-right"></div>
+                <div class="cell border-left"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-top"></div>
+                <div class="cell"></div>
+                <div class="cell border-top"></div>
+                <div class="cell"></div>
+                <div class="cell border-right"></div>
+                <div class="cell border-left border-top"></div>
+                <div class="cell border-top"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-top"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-right"></div>
+                <div class="cell border-left empty"></div>
+                <div class="cell border-right border-bottom"></div>
+                <div class="cell border-left"></div>
+                <div class="cell"></div>
+                <div class="cell border-right"></div>
+                <div class="cell border-left"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-bottom"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-right"></div>
+                <div class="cell border-left"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-right"></div>
+                <div class="cell border-left border-right"></div>
+                <div class="cell border-left"></div>
+                <div class="cell border-right"></div>
+                <div class="cell border-left"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-top border-bottom"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-right"></div>
+                <div class="cell border-left border-bottom"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-top border-bottom"></div>
+                <div class="cell"></div>
+                <div class="cell border-bottom"></div>
+                <div class="cell border-right"></div>
+                <div class="cell border-left"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-right"></div>
+                <div class="cell border-left"></div>
+                <div class="cell"></div>
+                <div class="cell border-top"></div>
+                <div class="cell border-right"></div>
+                <div class="cell border-left border-right"></div>
+                <div class="cell border-left"></div>
+                <div class="cell border-right border-top"></div>
+                <div class="cell border-left"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-top"></div>
+                <div class="cell"></div>
+                <div class="cell border-top empty"></div>
+                <div class="cell border-right"></div>
+                <div class="cell border-left"></div>
+                <div class="cell"></div>
+                <div class="cell border-bottom"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-right"></div>
+                <div class="cell border-left border-right"></div>
+                <div class="cell border-left"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-right"></div>
+                <div class="cell border-left empty"></div>
+                <div class="cell border-bottom"></div>
+                <div class="cell border-bottom"></div>
+                <div class="cell border-bottom"></div>
+                <div class="cell"></div>
+                <div class="cell border-right"></div>
+                <div class="cell border-left"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-top"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-right"></div>
+                <div class="cell border-left"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-right"></div>
+                <div class="cell border-left"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell border-right"></div>
+                <div class="cell border-left border-right border-top"></div>
+                <div class="cell border-left border-top"></div>
+                <div class="cell border-top"></div>
+            </div>
+        </div>
+
+        <div class="words-container">
+            <div class="word-list">
+                <h2>Slova v křížovce</h2>
+
+                <h3>Vodorovně →</h3>
+                <div class="word-item">pravděpodobnost</div>
+                <div class="word-item">experimentální</div>
+                <div class="word-item">elektronické</div>
+                <div class="word-item">souvislosti</div>
+                <div class="word-item">spolubydlící</div>
+                <div class="word-item">přestěhovali</div>
+                <div class="word-item">nedotýkejte</div>
+                <div class="word-item">nezvládneme</div>
+                <div class="word-item">dokonalosti</div>
+                <div class="word-item">nejhloupější</div>
+                <div class="word-item">pochybnosti</div>
+                <div class="word-item">potřebujete</div>
+                <div class="word-item">helikoptéru</div>
+                <div class="word-item">obchodování</div>
+                <div class="word-item">stoprocentně</div>
+                <div class="word-item">neopouštějte</div>
+                <div class="word-item">shromáždili</div>
+                <div class="word-item">čarodějnictví</div>
+                <div class="word-item">přestěhoval</div>
+                <div class="word-item">příležitostí</div>
+                <div class="word-item">zatracenýho</div>
+                <div class="word-item">helikoptéra</div>
+                <div class="word-item">emocionální</div>
+                <div class="word-item">příležitost</div>
+                <div class="word-item">chaos</div>
+                <div class="word-item">chaos</div>
+                <div class="word-item">chaos</div>
+                <div class="word-item">chaos</div>
+                <div class="word-item">chaos</div>
+                <div class="word-item">chaos</div>
+                <div class="word-item">chaos</div>
+                <div class="word-item">chaos</div>
+                <div class="word-item">chaos</div>
+                <div class="word-item">chaos</div>
+                <div class="word-item">chaos</div>
+                <div class="word-item">ptal</div>
+                <div class="word-item">ptal</div>
+                <div class="word-item">ptal</div>
+                <div class="word-item">ptal</div>
+                <div class="word-item">feťák</div>
+                <div class="word-item">mel</div>
+                <div class="word-item">mel</div>
+                <div class="word-item">mel</div>
+                <div class="word-item">mel</div>
+                <div class="word-item">mel</div>
+                <div class="word-item">mel</div>
+                <div class="word-item">mel</div>
+                <div class="word-item">mel</div>
+                <div class="word-item">slz</div>
+                <div class="word-item">slz</div>
+                <div class="word-item">slz</div>
+                <div class="word-item">host</div>
+                <div class="word-item">host</div>
+                <div class="word-item">nem</div>
+                <h3>Svisle ↓</h3>
+                <div class="word-item">nashledanou</div>
+                <div class="word-item">nezávislost</div>
+                <div class="word-item">připomínají</div>
+                <div class="word-item">potřebovali</div>
+                <div class="word-item">záležitostí</div>
+                <div class="word-item">předchozích</div>
+                <div class="word-item">nezaměstnaný</div>
+                <div class="word-item">detektivové</div>
+                <div class="word-item">poslouchali</div>
+                <div class="word-item">společenství</div>
+                <div class="word-item">respektovat</div>
+                <div class="word-item">převléknout</div>
+                <div class="word-item">nepřeložený</div>
+                <div class="word-item">nepřekvapilo</div>
+                <div class="word-item">neschopnost</div>
+                <div class="word-item">fantastická</div>
+                <div class="word-item">dobrovolníka</div>
+                <div class="word-item">schopnostmi</div>
+                <div class="word-item">nezávislosti</div>
+                <div class="word-item">nepotřeboval</div>
+                <div class="word-item">dobrovolník</div>
+                <div class="word-item">chaos</div>
+                <div class="word-item">chaos</div>
+                <div class="word-item">chaos</div>
+                <div class="word-item">chaos</div>
+                <div class="word-item">chaos</div>
+                <div class="word-item">chaos</div>
+                <div class="word-item">chaos</div>
+                <div class="word-item">chaos</div>
+                <div class="word-item">chaos</div>
+                <div class="word-item">chaos</div>
+                <div class="word-item">chaos</div>
+                <div class="word-item">chaos</div>
+                <div class="word-item">chaos</div>
+                <div class="word-item">chaos</div>
+                <div class="word-item">ptal</div>
+                <div class="word-item">ptal</div>
+                <div class="word-item">ptal</div>
+                <div class="word-item">ptal</div>
+                <div class="word-item">mel</div>
+                <div class="word-item">mel</div>
+                <div class="word-item">mel</div>
+                <div class="word-item">mel</div>
+                <div class="word-item">mel</div>
+                <div class="word-item">slz</div>
+                <div class="word-item">slz</div>
+            </div>
+
+            <div class="stats">
+                <h3>Statistiky</h3>
+                <p><strong>Celkem slov:</strong> 100</p>
+                <p><strong>Vodorovně:</strong> 54</p>
+                <p><strong>Svisle:</strong> 46</p>
+                <p><strong>Velikost mřížky:</strong> 25 × 25</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

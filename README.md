@@ -13,8 +13,12 @@ Automatický generátor českých klasických křížovek.
 
 ## Databáze slov
 
-Používá seznam 1000 nejčastějších českých slov ze serveru GitHub.
-Po vyčištění obsahuje 887 validních slov délky 3-15 znaků.
+**Malá databáze:** 887 slov (pro rychlé testování)
+**Velká databáze:** 23,113 slov (pro husté křížovky)
+
+Zdroje:
+- Malá: 1000 nejčastějších českých slov
+- Velká: word-o-mat seznam z titulků (Creative Commons BY-SA 3.0)
 
 ## Použití
 
@@ -36,6 +40,19 @@ Vytvoří dva HTML soubory v adresáři `output/`:
 - `krizovka_reseni.html` - křížovka s vyplněným řešením
 - `krizovka_zadani.html` - prázdná křížovka k vyplnění
 
+### Generování husté křížovky (98% vyplněnost):
+
+```bash
+cd src
+python generate_dense_html.py
+```
+
+Vytvoří hustou křížovku, kde téměř každé políčko je součástí slova:
+- `krizovka_husta_reseni.html` - hustá křížovka s řešením
+- `krizovka_husta_zadani.html` - hustá křížovka k vyplnění
+
+Používá velkou databázi 23,113 slov a vygeneruje 80-120 slov s vyplněností 95-99%.
+
 ### První spuštění:
 
 ```bash
@@ -49,17 +66,23 @@ python prepare_words.py
 ```
 krizovka/
 ├── data/
-│   ├── czech_words.txt        # Původní seznam českých slov
-│   └── czech_words_clean.txt  # Vyčištěný seznam (887 slov)
+│   ├── czech_words.txt              # Původní malý seznam (1000 slov)
+│   ├── czech_words_clean.txt        # Vyčištěný malý seznam (887 slov)
+│   ├── czech_words_large.txt        # Velký seznam (23,371 slov)
+│   └── czech_words_large_clean.txt  # Vyčištěný velký seznam (23,113 slov)
 ├── src/
-│   ├── generator.py           # Hlavní generátor křížovky
-│   ├── generate_html.py       # Generátor HTML výstupu
+│   ├── generator.py           # Základní generátor křížovky
+│   ├── dense_generator.py     # Generátor hustých křížovek
+│   ├── generate_html.py       # HTML výstup (základní)
+│   ├── generate_dense_html.py # HTML výstup (hustá křížovka)
 │   ├── grid.py                # Třída pro mřížku
 │   ├── prepare_words.py       # Příprava a čištění slov
 │   └── visualizer.py          # Vizualizace výstupu
 ├── output/
-│   ├── krizovka_reseni.html   # HTML s řešením
-│   └── krizovka_zadani.html   # HTML prázdné zadání
+│   ├── krizovka_reseni.html         # Základní křížovka - řešení
+│   ├── krizovka_zadani.html         # Základní křížovka - zadání
+│   ├── krizovka_husta_reseni.html   # Hustá křížovka - řešení
+│   └── krizovka_husta_zadani.html   # Hustá křížovka - zadání
 └── README.md
 ```
 
