@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>3D Křížovka</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            background: #1a1a1a;
+            color: #fff;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            color: #4af;
+        }
+        .stats {
+            background: #2a2a2a;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .layer-controls {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .layer-controls button {
+            background: #4af;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            margin: 0 5px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .layer-controls button:hover {
+            background: #6cf;
+        }
+        .layer-controls button:disabled {
+            background: #555;
+            cursor: not-allowed;
+        }
+        .layer-indicator {
+            font-size: 24px;
+            margin: 10px 0;
+            color: #4af;
+        }
+        .grid {
+            display: inline-block;
+            background: #000;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 20px auto;
+            display: block;
+            text-align: center;
+        }
+        .grid-row {
+            line-height: 1.4;
+        }
+        .cell {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            margin: 1px;
+            font-size: 18px;
+            font-weight: bold;
+            border: 1px solid #444;
+        }
+        .cell.filled {
+            background: #2a4a6a;
+            color: #fff;
+        }
+        .cell.empty {
+            background: #1a1a1a;
+            color: #333;
+        }
+        .layer {
+            display: none;
+        }
+        .layer.active {
+            display: block;
+        }
+        .words-list {
+            background: #2a2a2a;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .direction-group {
+            margin: 10px 0;
+        }
+        .direction-title {
+            color: #4af;
+            font-size: 18px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎮 3D Křížovka</h1>
+
+        <div class="stats">
+            <strong>Velikost:</strong> 5×5×5 (125 buněk)<br>
+            <strong>Vyplněno:</strong> 48.8%<br>
+            <strong>Počet slov:</strong> 16<br>
+        </div>
+
+        <div class="layer-controls">
+            <button onclick="prevLayer()">◀ Předchozí</button>
+            <span class="layer-indicator" id="layerIndicator">Vrstva Z = 0</span>
+            <button onclick="nextLayer()">Následující ▶</button>
+        </div>
+
+        <div id="gridContainer">
+        <div class="layer active" id="layer0">
+            <div class="grid">
+                <div class="grid-row">
+                    <span class="cell filled">l</span>
+                    <span class="cell empty">·</span>
+                    <span class="cell empty">·</span>
+                    <span class="cell empty">·</span>
+                    <span class="cell filled">ř</span>
+                </div>
+                <div class="grid-row">
+                    <span class="cell filled">e</span>
+                    <span class="cell empty">·</span>
+                    <span class="cell empty">·</span>
+                    <span class="cell empty">·</span>
+                    <span class="cell empty">·</span>
+                </div>
+                <div class="grid-row">
+                    <span class="cell filled">p</span>
+                    <span class="cell empty">·</span>
+                    <span class="cell empty">·</span>
+                    <span class="cell filled">p</span>
+                    <span class="cell empty">·</span>
+                </div>
+                <div class="grid-row">
+                    <span class="cell filled">š</span>
+                    <span class="cell empty">·</span>
+                    <span class="cell empty">·</span>
+                    <span class="cell empty">·</span>
+                    <span class="cell filled">k</span>
+                </div>
+                <div class="grid-row">
+                    <span class="cell filled">í</span>
+                    <span class="cell empty">·</span>
+                    <span class="cell empty">·</span>
+                    <span class="cell empty">·</span>
+                    <span class="cell filled">s</span>
+                </div>
+            </div>
+        </div>
+        <div class="layer" id="layer1">
+            <div class="grid">
+                <div class="grid-row">
+                    <span class="cell filled">t</span>
+                    <span class="cell empty">·</span>
+                    <span class="cell empty">·</span>
+                    <span class="cell empty">·</span>
+                    <span class="cell filled">e</span>
+                </div>
+                <div class="grid-row">
+                    <span class="cell filled">v</span>
+                    <span class="cell empty">·</span>
+                    <span class="cell empty">·</span>
+                    <span class="cell empty">·</span>
+                    <span class="cell empty">·</span>
+                </div>
+                <div class="grid-row">
+                    <span class="cell filled">o</span>
+                    <span class="cell empty">·</span>
+                    <span class="cell empty">·</span>
+                    <span class="cell filled">o</span>
+                    <span class="cell empty">·</span>
+                </div>
+                <div class="grid-row">
+                    <span class="cell filled">j</span>
+                    <span class="cell empty">·</span>
+                    <span class="cell empty">·</span>
+                    <span class="cell empty">·</span>
+                    <span class="cell filled">u</span>
+                </div>
+                <div class="grid-row">
+                    <span class="cell filled">e</span>
+                    <span class="cell empty">·</span>
+                    <span class="cell empty">·</span>
+                    <span class="cell empty">·</span>
+                    <span class="cell filled">v</span>
+                </div>
+            </div>
+        </div>
+        <div class="layer" id="layer2">
+            <div class="grid">
+                <div class="grid-row">
+                    <span class="cell filled">v</span>
+                    <span class="cell filled">p</span>
+                    <span class="cell empty">·</span>
+                    <span class="cell empty">·</span>
+                    <span class="cell filled">k</span>
+                </div>
+                <div class="grid-row">
+                    <span class="cell filled">ě</span>
+                    <span class="cell filled">r</span>
+                    <span class="cell empty">·</span>
+                    <span class="cell empty">·</span>
+                    <span class="cell filled">t</span>
+                </div>
+                <div class="grid-row">
+                    <span class="cell filled">d</span>
+                    <span class="cell filled">o</span>
+                    <span class="cell filled">b</span>
+                    <span class="cell filled">ř</span>
+                    <span class="cell filled">e</span>
+                </div>
+                <div class="grid-row">
+                    <span class="cell filled">ě</span>
+                    <span class="cell filled">t</span>
+                    <span class="cell empty">·</span>
+                    <span class="cell empty">·</span>
+                    <span class="cell filled">r</span>
+                </div>
+                <div class="grid-row">
+                    <span class="cell filled">t</span>
+                    <span class="cell filled">i</span>
+                    <span class="cell empty">·</span>
+                    <span class="cell empty">·</span>
+                    <span class="cell filled">é</span>
+                </div>
+            </div>
+        </div>
+        <div class="layer" id="layer3">
+            <div class="grid">
+                <div class="grid-row">
+                    <span class="cell filled">ú</span>
+                    <span class="cell empty">·</span>
+                    <span class="cell empty">·</span>
+                    <span class="cell filled">p</span>
+                    <span class="cell filled">l</span>
+                </div>
+                <div class="grid-row">
+                    <span class="cell filled">p</span>
+                    <span class="cell empty">·</span>
+                    <span class="cell empty">·</span>
+                    <span class="cell filled">r</span>
+                    <span class="cell empty">·</span>
+                </div>
+                <div class="grid-row">
+                    <span class="cell filled">l</span>
+                    <span class="cell empty">·</span>
+                    <span class="cell empty">·</span>
+                    <span class="cell filled">á</span>
+                    <span class="cell empty">·</span>
+                </div>
+                <div class="grid-row">
+                    <span class="cell filled">n</span>
+                    <span class="cell empty">·</span>
+                    <span class="cell empty">·</span>
+                    <span class="cell filled">c</span>
+                    <span class="cell filled">v</span>
+                </div>
+                <div class="grid-row">
+                    <span class="cell filled">ě</span>
+                    <span class="cell empty">·</span>
+                    <span class="cell empty">·</span>
+                    <span class="cell filled">i</span>
+                    <span class="cell filled">h</span>
+                </div>
+            </div>
+        </div>
+        <div class="layer" id="layer4">
+            <div class="grid">
+                <div class="grid-row">
+                    <span class="cell filled">k</span>
+                    <span class="cell empty">·</span>
+                    <span class="cell empty">·</span>
+                    <span class="cell filled">b</span>
+                    <span class="cell filled">a</span>
+                </div>
+                <div class="grid-row">
+                    <span class="cell filled">t</span>
+                    <span class="cell empty">·</span>
+                    <span class="cell empty">·</span>
+                    <span class="cell filled">u</span>
+                    <span class="cell empty">·</span>
+                </div>
+                <div class="grid-row">
+                    <span class="cell filled">e</span>
+                    <span class="cell empty">·</span>
+                    <span class="cell empty">·</span>
+                    <span class="cell filled">d</span>
+                    <span class="cell empty">·</span>
+                </div>
+                <div class="grid-row">
+                    <span class="cell filled">r</span>
+                    <span class="cell empty">·</span>
+                    <span class="cell empty">·</span>
+                    <span class="cell filled">o</span>
+                    <span class="cell filled">a</span>
+                </div>
+                <div class="grid-row">
+                    <span class="cell filled">ý</span>
+                    <span class="cell empty">·</span>
+                    <span class="cell empty">·</span>
+                    <span class="cell filled">u</span>
+                    <span class="cell filled">o</span>
+                </div>
+            </div>
+        </div>
+        </div>
+
+        <div class="words-list">
+            <h2>Seznam slov</h2>
+            <div class="direction-group">
+                <div class="direction-title">→ X (1 slov)</div>
+                dobře @ (0,2,2)<br>
+            </div>
+            <div class="direction-group">
+                <div class="direction-title">↓ Y (9 slov)</div>
+                proti @ (1,0,2)<br>
+                které @ (4,0,2)<br>
+                budou @ (3,0,4)<br>
+                práci @ (3,0,3)<br>
+                vědět @ (0,0,2)<br>
+                úplně @ (0,0,3)<br>
+                který @ (0,0,4)<br>
+                tvoje @ (0,0,1)<br>
+                lepší @ (0,0,0)<br>
+            </div>
+            <div class="direction-group">
+                <div class="direction-title">⊙ Z (6 slov)</div>
+                pořád @ (3,2,0)<br>
+                řekla @ (4,0,0)<br>
+                podle @ (0,2,0)<br>
+                svého @ (4,4,0)<br>
+                kurva @ (4,3,0)<br>
+                řekl @ (4,0,0)<br>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentLayer = 0;
+        const maxLayer = 4;
+
+        function showLayer(z) {
+            document.querySelectorAll('.layer').forEach(layer => {
+                layer.classList.remove('active');
+            });
+            document.getElementById('layer' + z).classList.add('active');
+            document.getElementById('layerIndicator').textContent = 'Vrstva Z = ' + z;
+            currentLayer = z;
+        }
+
+        function nextLayer() {
+            if (currentLayer < maxLayer) {
+                showLayer(currentLayer + 1);
+            }
+        }
+
+        function prevLayer() {
+            if (currentLayer > 0) {
+                showLayer(currentLayer - 1);
+            }
+        }
+
+        // Klávesnice
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                nextLayer();
+            } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                prevLayer();
+            }
+        });
+    </script>
+</body>
+</html>
